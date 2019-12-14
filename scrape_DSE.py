@@ -8,6 +8,9 @@ from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
+#EDIT VARIABLES HERE
+Donwload_year = "2015"
+
 #Start Timer
 start_time = datetime.now()
 
@@ -23,13 +26,13 @@ button = '/html/body/table[2]/tbody/tr/td[2]/table/tbody/tr[5]/td/form/table/tbo
 
 #Change form attributes to get Previous Data
 from_element =driver.find_element_by_xpath(from_date)
-driver.execute_script("arguments[0].min = '2015-01-01'", from_element)
+driver.execute_script("arguments[0].min = '"+str(download_year)+"-01-01'", from_element)
 to_element =driver.find_element_by_xpath(to_date)
-driver.execute_script("arguments[0].min = '2015-01-01'", to_element)
+driver.execute_script("arguments[0].min = '"+str(download_year)+"-01-01'", to_element)
 
 #Fill out the form
-driver.find_element_by_xpath(from_date).send_keys("01/01/2015")
-driver.find_element_by_xpath(to_date).send_keys("30/06/2015")
+driver.find_element_by_xpath(from_date).send_keys("01/01/"+str(download_year))
+driver.find_element_by_xpath(to_date).send_keys("31/12/2015"+str(download_year))
 driver.find_element_by_xpath(button).click()
 
 #Download Source and Beautify
@@ -54,7 +57,7 @@ for i in range(len(stock_table_data)-1):
         data[i].append(td.font.text)
 
 #Write to CSV file
-with open("Data.csv","w+") as my_csv:
+with open("Data_"+str(Donwload_year)+".csv","w+") as my_csv:
     csvWriter = csv.writer(my_csv,delimiter=',')
     csvWriter.writerows(data)
 
