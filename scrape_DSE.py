@@ -25,3 +25,4 @@ with open('/Users/shahriyer/Desktop/code/data_2015_1.csv', 'w', newline='') as c
     for row in table.find_elements_by_tag_name('tr'):
         wr.writerow([d.text for d in row.find_elements_by_tag_name('td')])
 
+driver.close()
