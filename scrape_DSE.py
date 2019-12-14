@@ -1,5 +1,8 @@
 import csv
+from datetime import datetime
 from selenium import webdriver
+
+start = datetime.now()
 
 chromedriver_location = "/Users/shahriyer/Desktop/code/chromedriver"
 driver = webdriver.Chrome(chromedriver_location)
@@ -26,3 +29,8 @@ with open('/Users/shahriyer/Desktop/code/data_2015_1.csv', 'w', newline='') as c
         wr.writerow([d.text for d in row.find_elements_by_tag_name('td')])
 
 driver.close()
+
+finish = datetime.now() - start
+
+print("TIME TAKEN TO COMPLETE:")
+print(finish)
