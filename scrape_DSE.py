@@ -8,14 +8,11 @@ from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
-#EDIT VARIABLES HERE
-Donwload_year = "2015"
-
 #Start Timer
 start_time = datetime.now()
 
 #Initialize ChromeDriver and load Website
-chromedriver_location = "Chromedriver"
+chromedriver_location = "chromedriver"
 driver = webdriver.Chrome(chromedriver_location)
 driver.get('http://dsebd.org/data_archive.php')
 
@@ -26,13 +23,13 @@ button = '/html/body/table[2]/tbody/tr/td[2]/table/tbody/tr[5]/td/form/table/tbo
 
 #Change form attributes to get Previous Data
 from_element =driver.find_element_by_xpath(from_date)
-driver.execute_script("arguments[0].min = '"+str(download_year)+"-01-01'", from_element)
+driver.execute_script("arguments[0].min = '2015-01-01'", from_element)
 to_element =driver.find_element_by_xpath(to_date)
-driver.execute_script("arguments[0].min = '"+str(download_year)+"-01-01'", to_element)
+driver.execute_script("arguments[0].min = '2015-01-01'", to_element)
 
 #Fill out the form
-driver.find_element_by_xpath(from_date).send_keys("01/01/"+str(download_year))
-driver.find_element_by_xpath(to_date).send_keys("31/12/2015"+str(download_year))
+driver.find_element_by_xpath(from_date).send_keys("01/01/2015")
+driver.find_element_by_xpath(to_date).send_keys("01/01/2015")
 driver.find_element_by_xpath(button).click()
 
 #Download Source and Beautify
@@ -47,7 +44,7 @@ stock_table = soup.find("table", attrs={"border":"0", "cellpadding":"3", "width"
 stock_table_data = stock_table.tbody.find_all("tr") 
 
 #Create 2D Array of Data length
-print("Number of Rows in Dataset:")
+print("DATASET SIZE:")
 print(len(stock_table_data))
 data = [[] for x in range(len(stock_table_data)-1)]
 
@@ -57,11 +54,11 @@ for i in range(len(stock_table_data)-1):
         data[i].append(td.font.text)
 
 #Write to CSV file
-with open("Data_"+str(Donwload_year)+".csv","w+") as my_csv:
+with open("Data.csv","w+") as my_csv:
     csvWriter = csv.writer(my_csv,delimiter=',')
     csvWriter.writerows(data)
 
 #Calculate Time
-finis_time = datetime.now() - start_time
+finish_time = datetime.now() - start_time
 print("TIME TAKEN TO COMPLETE:")
 print(finish_time)
